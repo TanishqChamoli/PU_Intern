@@ -33,7 +33,7 @@ info_lst = []
 def extract_tags(page_count):
     link = "https://www.rcsb.org/search?request=%7B%22query%22%3A%7B%22parameters%22%3A%7B%22value%22%3A%22a%22%7D%2C%22type%22%3A%22terminal%22%2C%22service%22%3A%22text%22%2C%22node_id%22%3A0%7D%2C%22return_type%22%3A%22entry%22%2C%22request_options%22%3A%7B%22pager%22%3A%7B%22start%22%3A0%2C%22rows%22%3A100%7D%2C%22scoring_strategy%22%3A%22combined%22%2C%22sort%22%3A%5B%7B%22sort_by%22%3A%22score%22%2C%22direction%22%3A%22desc%22%7D%5D%7D%2C%22request_info%22%3A%7B%22src%22%3A%22ui%22%2C%22query_id%22%3A"
     driver = webdriver.Chrome(
-        executable_path='E:\Work\Miskaa\chromedriver', options=options)
+        executable_path='.\chromedriver', options=options)
     driver.get(link)
     datas = []
     print(page_count)
@@ -85,8 +85,8 @@ if __name__ == "__main__":
 # ------------------------------SCRAPPING THE TAGS FROM THE MAIN PAGE----------------------------------
 
     # getting the data from the site as the dataset withe the query of "a"
-    # datas = extract_tags(10)
-    # print(len(datas))
+    datas = extract_tags(10)
+    print(len(datas))
 
     # # saving the data in the file
     # with open("tags.txt", "w") as tag:
