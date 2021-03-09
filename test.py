@@ -29,11 +29,10 @@ options.add_argument("--no-sandbox")
 # defining a global list for the data to be saved
 info_lst = []
 
-
 def extract_tags(page_count):
-    link = "https://www.rcsb.org/search?request=%7B%22query%22%3A%7B%22parameters%22%3A%7B%22value%22%3A%22a%22%7D%2C%22type%22%3A%22terminal%22%2C%22service%22%3A%22text%22%2C%22node_id%22%3A0%7D%2C%22return_type%22%3A%22entry%22%2C%22request_options%22%3A%7B%22pager%22%3A%7B%22start%22%3A0%2C%22rows%22%3A100%7D%2C%22scoring_strategy%22%3A%22combined%22%2C%22sort%22%3A%5B%7B%22sort_by%22%3A%22score%22%2C%22direction%22%3A%22desc%22%7D%5D%7D%2C%22request_info%22%3A%7B%22src%22%3A%22ui%22%2C%22query_id%22%3A"
+    link = "https://www.rcsb.org/search?request=%7B%22query%22%3A%7B%22parameters%22%3A%7B%22value%22%3A%22a%22%7D%2C%22type%22%3A%22terminal%22%2C%22service%22%3A%22text%22%2C%22node_id%22%3A0%7D%2C%22return_type%22%3A%22entry%22%2C%22request_options%22%3A%7B%22pager%22%3A%7B%22start%22%3A0%2C%22rows%22%3A100%7D%2C%22scoring_strategy%22%3A%22combined%22%2C%22sort%22%3A%5B%7B%22sort_by%22%3A%22score%22%2C%22direction%22%3A%22desc%22%7D%5D%7D%2C%22request_info%22%3A%7B%22src%22%3A%22ui%22%2C%22query_id%22%3A%220e78c1657e13337d974c3dcca4505e08%22%7D%7D"
     driver = webdriver.Chrome(
-        executable_path='.\chromedriver', options=options)
+        executable_path='E:\Work\Miskaa\chromedriver', options=options)
     driver.get(link)
     datas = []
     print(page_count)
@@ -57,9 +56,9 @@ def get_data_for_tag(data):
     global info_lst
     info_dic = {}
     link = "https://www.rcsb.org/fasta/entry/"+data+"/display"
-    source = requests.get(link).text
-    soup = BeautifulSoup(source, 'lxml')
     try:
+        source = requests.get(link).text
+        soup = BeautifulSoup(source, 'lxml')
         chain = soup.text
         info_dic['key'] = data
         info_dic['url'] = "https://www.rcsb.org/structure/"+data
@@ -85,8 +84,9 @@ if __name__ == "__main__":
 # ------------------------------SCRAPPING THE TAGS FROM THE MAIN PAGE----------------------------------
 
     # getting the data from the site as the dataset withe the query of "a"
-    datas = extract_tags(10)
+    datas = extract_tags(2)
     print(len(datas))
+    print(datas)
 
     # # saving the data in the file
     # with open("tags.txt", "w") as tag:
@@ -95,7 +95,7 @@ if __name__ == "__main__":
     # # sample data extracted
     # # datas = ['5H7A', '167D', '1D6D', '1IKK', '6S47', '6T83', '6GQV', '6SV4', '6T4Q', '6SNT', '6T7I', '6HD7', '1EEG', '6QTZ', '6RI5', '6MEM', '6QT0', '6QIK', '6PY0', '6R86', '3A5C', '6RZZ', '1D49', '6TNU', '1FML', '1FMJ', '5NDG', '6YLG', '6S05', '1OZ8', '1AQB', '1CRB', '1D57', '1D56', '6I7O', '1KQW', '6R84', '6R87', '1HBP', '6YLH', '6Z6K', '1KT7', '1KT6', '1KT5', '1KT4', '1KT3', '1GX8', '6Z6J', '6QXE', '1KGL', '1MX8', '6YLY', '4QYN', '4QZT', '1EII', '5H8T', '5HBS', '5LJD', '5LJC', '5LJE', '5LJB', '2RCT', '6HHQ', '1IIU', '6T7T', '5GAK', '5OBM', '6Q8Y', '6GQB', '6QX3', '1JDG', '1GYT', '2ZNL', '6GQ1', '1BXH']
 
-    # # formartting and writing the data in file for future use:
+    # formartting and writing the data in file for future use:
     # with open("tags1.txt", "w") as tag:
     #     # print(tag.readlines()[0])
     #     for t in datas:
@@ -104,20 +104,20 @@ if __name__ == "__main__":
 
 # ------------------------------------GETTING THE FINAL DATA----------------------------------------
 
-    # we need to have some time as after making a large number of requests at the same time we will not be getting the data back
+    # # # we need to have some time as after making a large number of requests at the same time we will not be getting the data back
 
-    # # reding from the file to get the tags
+    # reading from the file to get the tags
     # with open("tags1.txt", "r") as tag:
     #     datas = (tag.read().split(",")[:-1])
 
-    # print(datas[:50])
+    # # print(datas[:50])
 
     # # Make the Pool of workers
     # pool = ThreadPool(20)
 
     # # getting the data for each of the tag which we had stored
 
-    # pool.map(get_data_for_tag, datas[:50])
+    # pool.map(get_data_for_tag, datas[11000:])
 
     # # Close the pool and wait for the work to finish
     # pool.close()
@@ -127,7 +127,7 @@ if __name__ == "__main__":
     # # print(info_lst)
     # print(len(info_lst))
 
-    # saving the final dataset
+    # # saving the final dataset
 
     # with open("temp.json", "w") as inp:
     #     inp.write(str(info_lst))
@@ -136,8 +136,7 @@ if __name__ == "__main__":
 # -------------------------------------INSERTING IN THE DATABSE------------------------------
 
     # # inserting the data in the database
-    # json_get()
-    # till here for the app
+    # json_get()    # till here for the app
 
 # ------------------------------------------SEARCHING----------------------------------------
 
